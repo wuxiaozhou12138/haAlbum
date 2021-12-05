@@ -98,40 +98,76 @@ function init(){
 		tX = 0,
 		tY = 10,
 		index = 0;//滚轮初始值
+
 	document.onmousedown = function(e){
 		clearInterval(obox.timer);
 		e = e || window.event;
 		var sX = e.clientX,
 			sY = e.clientY;
-			this.onmousemove = function(e){
-				e = e || window.event;
-				var nX = e.clientX,
-					nY = e.clientY;
-					 // 当前点的坐标和前一点的坐标差值
-					desX = nX - sX;
-					desY = nY - sY;
-                    tX += desX*0.1; 
-                    tY += desY*0.1;
+		this.onmousemove = function(e){
+			e = e || window.event;
+			var nX = e.clientX,
+				nY = e.clientY;
+					// 当前点的坐标和前一点的坐标差值
+				desX = nX - sX;
+				desY = nY - sY;
+				tX += desX*0.1; 
+				tY += desY*0.1;
 
-					obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
-					sX = nX;
-					sY = nY;
-			}
-			this.onmouseup = function(){
-				this.onmousemove = this.onmouseup = null;
-				obox.timer = setInterval(function(){
-					desX *= 0.95;
-					desY *= 0.95;
-					tX += desX*0.1;
-					tY += desY*0.1;
-					obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
-					if (Math.abs(desX)<0.5 && Math.abs(desY)<0.5) {
-						clearInterval(obox.timer);
-					}
-				},13);
-			}
+				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
+				sX = nX;
+				sY = nY;
+		}
+		this.onmouseup = function(){
+			this.onmousemove = this.onmouseup = null;
+			obox.timer = setInterval(function(){
+				desX *= 0.95;
+				desY *= 0.95;
+				tX += desX*0.1;
+				tY += desY*0.1;
+				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
+				if (Math.abs(desX)<0.5 && Math.abs(desY)<0.5) {
+					clearInterval(obox.timer);
+				}
+			},13);
+		}
 		return false;
 	}
+
+	document.ontouchstart = function(e){
+		clearInterval(obox.timer);
+		e = e || window.event;
+		var sX = e.touches[0].clientX,
+    	    sY = e.touches[0].clientY;
+		this.ontouchmove = function(e){
+			e = e || window.event;
+			var nX = e.touches[0].clientX,
+				nY = e.touches[0].clientY;
+					// 当前点的坐标和前一点的坐标差值
+				desX = nX - sX;
+				desY = nY - sY;
+				tX += desX*0.1; 
+				tY += desY*0.1;
+
+				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
+				sX = nX;
+				sY = nY;
+		};
+		this.ontouchend = function(e){
+			this.onmousemove = this.onmouseup = null;
+			obox.timer = setInterval(function(){
+				desX *= 0.95;
+				desY *= 0.95;
+				tX += desX*0.1;
+				tY += desY*0.1;
+				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
+				if (Math.abs(desX)<0.5 && Math.abs(desY)<0.5) {
+					clearInterval(obox.timer);
+				}
+			},13);
+		}
+	};
+
 	//滚轮放大缩小
 	mousewheel(document,function(e){
 		e = e || window.event;
@@ -144,6 +180,7 @@ function init(){
 			(index<(-1050)&&(index=(-1050)));
 		document.body.style.perspective = 1000 + index + "px";
 	})
+
 	function mousewheel(obj,fn){
 		document.onmousewheel===null?obj.onmousewheel=fn:addEvent(obj,"DOMMouseScroll",fn)
 	}
