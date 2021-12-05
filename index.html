@@ -147,7 +147,7 @@ function init(){
 				desX = nX - sX;
 				desY = nY - sY;
 				tX += desX*0.1; 
-				tY += desY*0.001;
+				tY += desY*0.02;
 
 				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
 				sX = nX;
@@ -159,7 +159,7 @@ function init(){
 				desX *= 0.95;
 				desY *= 0.95;
 				tX += desX*0.1;
-				tY += desY*0.1;
+				tY += desY*0.02;
 				obox.style.transform = "rotateX("+(-tY)+"deg) rotateY("+tX+"deg)";
 				if (Math.abs(desX)<0.5 && Math.abs(desY)<0.5) {
 					clearInterval(obox.timer);
